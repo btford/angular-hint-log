@@ -18,6 +18,14 @@ describe('hintLog', function() {
       hintLog.setLogDefault('includeLine', false);
       expect(hintLog.includeLine).toBe(false);
     });
+
+    it('should throw an error if the default is unknown', function() {
+      hintLog.moduleName = 'Test';
+      hintLog.moduleDescription = 'A module to test Angular hint logging'
+      expect(function() {
+        hintLog.setLogDefault('notARealDefault', true);
+      }).toThrow('Tried to set unknown log default: notARealDefault');
+    });
   });
 
   describe('printAvailableMessages', function()  {
@@ -50,6 +58,36 @@ describe('hintLog', function() {
     });
 
 
+    it('should print information and line numbers if includeLine default is true', function() {
+      spyOn(console, 'groupCollapsed');
+      spyOn(console, 'warn');
+      hintLog.moduleName = 'Test';
+      hintLog.moduleDescription = 'A module to test Angular hint logging';
+      hintLog.setLogDefault('includeLine', true);
+      hintLog.currentMessages = ['message1', 'message2'];
+      hintLog.lines = ['line1', 'line2'];
+      hintLog.logFormattedMessages();
+      expect(console.groupCollapsed).toHaveBeenCalledWith('Angular Hint: Test A module to test Angular hint logging');
+      expect(console.warn).toHaveBeenCalledWith('message1 line1');
+      expect(console.warn).not.toHaveBeenCalledWith('message2 line1');
+    });
+
+
+    it('should print only message if includeLine default is false', function() {
+      spyOn(console, 'groupCollapsed');
+      spyOn(console, 'warn');
+      hintLog.moduleName = 'Test';
+      hintLog.moduleDescription = 'A module to test Angular hint logging';
+      hintLog.setLogDefault('includeLine', true);
+      hintLog.currentMessages = ['message1', 'message2'];
+      hintLog.lines = ['line1', 'line2'];
+      hintLog.logFormattedMessages();
+      expect(console.groupCollapsed).toHaveBeenCalledWith('Angular Hint: Test A module to test Angular hint logging');
+      expect(console.warn).toHaveBeenCalledWith('message1 line1');
+      expect(console.warn).not.toHaveBeenCalledWith('message2 line1');
+    });
+
+
     it('should console log an element if called by the Directives module', function() {
       spyOn(console, 'groupCollapsed');
       spyOn(console, 'warn');
@@ -66,7 +104,7 @@ describe('hintLog', function() {
   });
 
   describe('logMessages', function() {
-    it('should print messages without any formatting using console.log', function() {
+    it('should print messages using only console.log', function() {
       spyOn(console, 'groupCollapsed');
       spyOn(console, 'warn');
       spyOn(console, 'log');
@@ -78,6 +116,40 @@ describe('hintLog', function() {
       expect(console.groupCollapsed).not.toHaveBeenCalled();
       expect(console.warn).not.toHaveBeenCalled();
       expect(console.log).toHaveBeenCalled();
+    });
+
+
+    it('should print information and line numbers', function() {
+      spyOn(console, 'log');
+      hintLog.moduleName = 'Test';
+      hintLog.moduleDescription = 'A module to test Angular hint logging';
+      hintLog.currentMessages = ['message1', 'message2'];
+      hintLog.lines = ['line1', 'line2'];
+      hintLog.logMessages();
+      expect(console.log).toHaveBeenCalledWith('message1 line1');
+      expect(console.log).not.toHaveBeenCalledWith('message2 line1');
+    });
+  });
+
+  describe('foundError', function() {
+    it('should not create messages if the debugger default is set', function() {
+      spyOn(hintLog, 'createErrorMessage');
+      hintLog.setLogDefault('debuggerBreakpoint', true);
+      hintLog.foundError('Some error');
+      expect(hintLog.createErrorMessage).not.toHaveBeenCalled();
+      hintLog.setLogDefault('debuggerBreakpoint', false);
+    });
+
+
+    it('should throw an error if the error default is set', function() {
+      hintLog.moduleName = 'Test';
+      hintLog.moduleDescription = 'A module to test Angular hint logging'
+      hintLog.setLogDefault('throwError', true);
+      hintLog.setLogDefault('includeLine', false);
+      expect(function() {
+        hintLog.foundError('Some error');
+      }).toThrow('Some error undefined');
+      hintLog.setLogDefault('throwError', false);
     });
   });
 });
