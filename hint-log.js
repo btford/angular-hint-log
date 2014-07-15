@@ -53,7 +53,12 @@
   hintLog.logFormattedMessages = function() {
     console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+      if(hintLog.includeLine) {
+        console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+      }
+      else {
+        console.warn(hintLog.currentMessages[i]);
+      }
       if(hintLog.moduleName === 'Directives') {
         console.log(hintLog.domElements[hintLog.lines[i]]);
       }
@@ -64,7 +69,12 @@
   hintLog.logMessages = function() {
     console.log('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      console.log(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+      if(hintLog.includeLine) {
+        console.log(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+      }
+      else {
+        console.log(hintLog.currentMessages[i]);
+      }
       if(hintLog.moduleName === 'Directives') {
         console.log(hintLog.domElements[hintLog.lines[i]]);
       }
