@@ -54,7 +54,7 @@
   hintLog.logFormattedMessages = function() {
     console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine) {
+      if(hintLog.includeLine && ! hintLog.moduleName === 'Directives') {
         console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
       }
       else {
@@ -118,7 +118,7 @@
       hintLog.currentMessages.push(error);
       hintLog.lines.push(lineNumber);
       if(domElement) {
-        domElements[lineNumber] = domElement;
+        hintLog.domElements[lineNumber] = domElement;
       }
     }
   };
