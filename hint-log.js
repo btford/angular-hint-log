@@ -85,12 +85,17 @@
     if(hintLog.debugBreak) {
       debugger;
     }
-    else if(hintLog.loudError) {
+    else if(hintLog.throwError) {
       throw new Error(error + ' ' + hintLog.findLineNumber());
     }
     else {
-      if(moduleName === 'Directives') {
-        hintLog.createErrorMessage(error, hintLog.findLineNumber(), domElement);
+      if(hintLog.moduleName === 'Directives') {
+        if(!hintLog.propOnly) {
+          hintLog.createErrorMessage(error, hintLog.findLineNumber(), domElement);
+        }
+        else {
+          hintLog.createErrorMessage(error, hintLog.findLineNumber());
+        }
       }
       else {
         hintLog.createErrorMessage(error, hintLog.findLineNumber());
@@ -110,7 +115,7 @@
     if(!hintLog.pastMessages[lineNumber]) {
       hintLog.pastMessages[lineNumber] = lineNumber;
       hintLog.currentMessages.push(error);
-      domInterceptor.lines.push(lineNumber);
+      hintLog.lines.push(lineNumber);
       if(domElement) {
         domElements[lineNumber] = domElement;
       }
