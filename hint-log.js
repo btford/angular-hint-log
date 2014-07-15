@@ -30,6 +30,7 @@
   hintLog.domElements = {};
   hintLog.moduleName;
   hintLog.moduleDescription;
+  hintLog.lineNumber = 1;
 
 
   //Log messages periodically
@@ -86,28 +87,28 @@
       debugger;
     }
     else if(hintLog.throwError) {
-      throw new Error(error + ' ' + hintLog.findLineNumber());
+      throw new Error(error + ' ' + hintLog.findLineNumber(hintLog.lineNumber));
     }
     else {
       if(hintLog.moduleName === 'Directives') {
         if(!hintLog.propOnly) {
-          hintLog.createErrorMessage(error, hintLog.findLineNumber(), domElement);
+          hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber), domElement);
         }
         else {
-          hintLog.createErrorMessage(error, hintLog.findLineNumber());
+          hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber));
         }
       }
       else {
-        hintLog.createErrorMessage(error, hintLog.findLineNumber());
+        hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber));
       }
     }
   };
 
-  hintLog.findLineNumber = function() {
+  hintLog.findLineNumber = function(splitNumber) {
     var e = new Error();
     //Find the line in the user's program rather than in this service
-    var lineNum = e.stack.split('\n')[4];
-    lineNum = lineNum.split('<anonymous> ')[1];
+    var lineNum = e.stack.split('\n')[splitNumber];
+    lineNum = lineNum.split('<anonymous> ')[1] || lineNum;
     return lineNum;
   };
 

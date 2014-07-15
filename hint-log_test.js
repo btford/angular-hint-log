@@ -148,8 +148,14 @@ describe('hintLog', function() {
       hintLog.setLogDefault('includeLine', false);
       expect(function() {
         hintLog.foundError('Some error');
-      }).toThrow('Some error undefined');
+      }).toThrow();
       hintLog.setLogDefault('throwError', false);
+    });
+  });
+
+  describe('findLineNumber', function() {
+    it('should return a value', function() {
+      expect(hintLog.findLineNumber(1)).not.toBeUndefined();
     });
   });
 });
