@@ -5,20 +5,21 @@
   hintLog.propOnly = false;
   hintLog.includeLine = true;
   hintLog.setLogDefault = function(defaultToSet, status) {
-    if(defaultToSet === 'throwError') {
-      status ? hintLog.throwError = true : hintLog.throwError = false;
-    }
-    else if(defaultToSet === 'debuggerBreakpoint') {
-      status ? hintLog.debugBreak = true : hintLog.debugBreak = false;
-    }
-    else if(defaultToSet === 'propertyOnly') {
-      status ? hintLog.propOnly = true : hintLog.propOnly = false;
-    }
-    else if(defaultToSet === 'includeLine') {
-      status ? hintLog.includeLine = true : hintLog.includeLine = false;
-    }
-    else {
-      throw new Error('Tried to set unknown log default: ' + defaultToSet);
+    switch(defaultToSet) {
+      case 'throwError' :
+        hintLog.throwError = status;
+        break;
+      case 'debuggerBreakpoint' :
+        hintLog.debugBreak = status;
+        break;
+      case 'propertyOnly' :
+        hintLog.propOnly = status;
+        break;
+      case 'includeLine' :
+        hintLog.includeLine = status;
+        break;
+      default :
+        throw new Error('Tried to set unknown log default: ' + defaultToSet);
     }
   };
 
@@ -54,7 +55,7 @@
   hintLog.logFormattedMessages = function() {
     console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine && ! hintLog.moduleName === 'Directives') {
+      if(hintLog.includeLine && hintLog.moduleName != 'Directives') {
         console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
       }
       else {
