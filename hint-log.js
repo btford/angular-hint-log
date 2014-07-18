@@ -55,7 +55,7 @@
   hintLog.logFormattedMessages = function() {
     console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine && hintLog.moduleName != 'Directives' || hintLog.moduleName === 'Interpolation') {
+      if(hintLog.includeLine && hintLog.moduleName != 'Directives' || hintLog.moduleName != 'Interpolation') {
         console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
       }
       else {
