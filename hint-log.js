@@ -55,14 +55,15 @@
   hintLog.logFormattedMessages = function() {
     console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
     for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine && hintLog.moduleName != 'Directives') {
+      if(hintLog.includeLine && hintLog.moduleName != 'Directives' || hintLog.moduleName === 'Interpolation') {
         console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
       }
       else {
-        console.warn(hintLog.currentMessages[i]);
+        console.groupCollapsed(hintLog.currentMessages[i]);
       }
-      if(hintLog.moduleName === 'Directives') {
+      if(hintLog.moduleName === 'Directives' || hintLog.moduleName === 'Interpolation') {
         console.log(hintLog.domElements[hintLog.lines[i]]);
+        console.groupEnd();
       }
     }
     console.groupEnd();
@@ -77,7 +78,7 @@
       else {
         console.log(hintLog.currentMessages[i]);
       }
-      if(hintLog.moduleName === 'Directives') {
+      if(hintLog.moduleName === 'Directives' || hintLog.moduleName === 'Interpolation') {
         console.log(hintLog.domElements[hintLog.lines[i]]);
       }
     }
@@ -91,7 +92,7 @@
       throw new Error(error + ' ' + hintLog.findLineNumber(hintLog.lineNumber));
     }
     else {
-      if(hintLog.moduleName === 'Directives') {
+      if(hintLog.moduleName === 'Directives' || hintLog.moduleName === 'Interpolation') {
         if(!hintLog.propOnly) {
           hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber), domElement);
         }

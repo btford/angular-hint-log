@@ -50,8 +50,9 @@ describe('hintLog', function() {
       spyOn(console, 'warn');
 
       hintLog.moduleName = 'Test';
-      hintLog.moduleDescription = 'A module to test Angular hint logging'
+      hintLog.moduleDescription = 'A module to test Angular hint logging';
       hintLog.currentMessages = ['testMessage'];
+      hintLog.includeLine = 1;
       hintLog.logFormattedMessages();
       expect(console.groupCollapsed).toHaveBeenCalled();
       expect(console.warn).toHaveBeenCalled();
@@ -90,15 +91,13 @@ describe('hintLog', function() {
 
     it('should console log an element if called by the Directives module', function() {
       spyOn(console, 'groupCollapsed');
-      spyOn(console, 'warn');
       spyOn(console, 'log');
 
       hintLog.moduleName = 'Directives';
-      hintLog.moduleDescription = 'A module to hint about Angular Directives'
+      hintLog.moduleDescription = 'A module to hint about Angular Directives';
       hintLog.currentMessages = ['Did you mean ng-click?'];
       hintLog.logFormattedMessages();
       expect(console.groupCollapsed).toHaveBeenCalled();
-      expect(console.warn).toHaveBeenCalled();
       expect(console.log).toHaveBeenCalled();
     });
   });
@@ -110,7 +109,7 @@ describe('hintLog', function() {
       spyOn(console, 'log');
 
       hintLog.moduleName = 'Test';
-      hintLog.moduleDescription = 'A module to hint about Angular Directives'
+      hintLog.moduleDescription = 'A module to hint about Angular Directives';
       hintLog.currentMessages = ['Did you mean ng-click?'];
       hintLog.logMessages();
       expect(console.groupCollapsed).not.toHaveBeenCalled();
