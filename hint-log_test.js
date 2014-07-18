@@ -11,12 +11,7 @@ describe('hintLog', function() {
       hintLog.logMessage('##Directives## An error');
       expect(hintLog.flush()['Directives']['An error']).toEqual('An error');
     });
-
-
-    it('should identify the name of a module given between ##identifiers##', function() {
-      hintLog.logMessage('##Dom## An error');
-      expect(hintLog.flush()['Dom']['An error']).toEqual('An error');
-    });
+  });
 
 
     it('should strip leading white space when using ##identifiers##', function() {
@@ -34,26 +29,6 @@ describe('hintLog', function() {
       expect(hintLog.flush()['General']['An error']).toEqual('An error');
     });
 
-
-    it('should prevent the logging of duplicate messages', function() {
-      //Same error, only logged once
-      hintLog.logMessage('##Dom## An error');
-      hintLog.logMessage('##Dom## An error');
-      expect(Object.keys(hintLog.flush()['Dom']).length).toBe(1);
-
-      //Different errors, both logged
-      hintLog.logMessage('##Dom## An error');
-      hintLog.logMessage('##Dom## A second error');
-      expect(Object.keys(hintLog.flush()['Dom']).length).toBe(2);
-
-      hintLog.logMessage('An error');
-      hintLog.logMessage('An error');
-      expect(Object.keys(hintLog.flush()['General']).length).toBe(1);
-
-      hintLog.logMessage('An error');
-      hintLog.logMessage('A second error');
-      expect(Object.keys(hintLog.flush()['General']).length).toBe(2);
-    });
   });
 
   describe('flush', function() {
