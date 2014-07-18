@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
 * HintLog creates a queue of messages logged by ngHint modules. This object
 * has a key for each ngHint module that corresponds to the messages
@@ -27,6 +28,7 @@ function logMessage(message) {
     //If the category does not exist, initialize a new object
     queuedMessages[nameThenValue[1]] = queuedMessages[nameThenValue[1]] || {};
     queuedMessages[nameThenValue[1]][nameThenValue[2]] = nameThenValue[2];
+
   }
   module.exports.onMessage(message);
 }
