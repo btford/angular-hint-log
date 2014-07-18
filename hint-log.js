@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
 * HintLog creates a queue of messages logged by ngHint modules. This object
 * has a key for each ngHint module that corresponds to the messages
