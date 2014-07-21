@@ -6,6 +6,15 @@
   hintLog.includeLine = true;
   hintLog.setLogDefault = function(defaultToSet, status) {
     switch(defaultToSet) {
+      case 'lineNumber' :
+        hintLog.lineNumber = status;
+        break;
+      case 'moduleName' :
+        hintLog.moduleName = status;
+        break;
+      case 'moduleDescription' :
+        hintLog.moduleDescription = status;
+        break;
       case 'throwError' :
         hintLog.throwError = status;
         break;
