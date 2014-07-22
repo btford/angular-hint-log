@@ -1,4 +1,4 @@
-Angular Hint Log
+Angular Hint Log [![Build Status](https://travis-ci.org/angular/angular-hint-log.svg?branch=master)](https://travis-ci.org/angular/angular-hint-log)
 ==================
 
 A library to format messages for the AngularHint tool
