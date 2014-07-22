@@ -11,8 +11,7 @@
     "karma-jasmine": "^0.1.5"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run",
-    "build": "gulp"
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +28,7 @@
     "gulp": "^3.8.5",
     "karma-bro": "^0.6.0",
     "karma-coverage": "^0.2.4",
+    "karma-sauce-launcher": "^0.2.9",
     "watchify": "^0.10.2"
   }
 }
