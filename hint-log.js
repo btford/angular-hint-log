@@ -1,47 +1,60 @@
 (function (hintLog) {
 
-  hintLog.throwError = false;
-  hintLog.debugBreak = false;
-  hintLog.propOnly = false;
-  hintLog.includeLine = true;
+  var stackTraceLine = 1;
+  var moduleName;
+  var moduleDescription;
+  var throwError = false;
+  var debugBreak = false;
+  var propOnly = false;
+  var includeLine = true;
+
   hintLog.setLogDefault = function(defaultToSet, status) {
     switch(defaultToSet) {
-      case 'lineNumber' :
-        hintLog.lineNumber = status;
+      case 'stackTraceLine' :
+        stackTraceLine = status;
         break;
       case 'moduleName' :
-        hintLog.moduleName = status;
+        moduleName = status;
         break;
       case 'moduleDescription' :
-        hintLog.moduleDescription = status;
+        moduleDescription = status;
         break;
       case 'throwError' :
-        hintLog.throwError = status;
+        throwError = status;
         break;
       case 'debuggerBreakpoint' :
-        hintLog.debugBreak = status;
+        debugBreak = status;
         break;
       case 'propertyOnly' :
-        hintLog.propOnly = status;
+        propOnly = status;
         break;
       case 'includeLine' :
-        hintLog.includeLine = status;
+        includeLine = status;
         break;
       default :
         throw new Error('Tried to set unknown log default: ' + defaultToSet);
     }
   };
 
+  hintLog.getDefaults = function() {
+    var logDefaults = {
+      'stackTraceLine': stackTraceLine,
+      'moduleName': moduleName,
+      'moduleDescription': moduleDescription,
+      'throwError': throwError,
+      'debugBreak': debugBreak,
+      'propOnly': propOnly,
+      'includeLine': includeLine
+    }
+    return logDefaults;
+  };
+
   //Record past messages so that the same line number will not
   //be repeatedly reported
-  hintLog.pastMessages = {};
-  hintLog.currentMessages = [];
-  hintLog.lines = [];
-  hintLog.domElements = {};
-  hintLog.moduleName;
-  hintLog.moduleDescription;
-  hintLog.lineNumber = 1;
-
+  var pastMessages = {};
+  var currentMessages = [];
+  var lines = [];
+  var domElements = {};
 
   //Log messages periodically
   hintLog.printAvailableMessages = function(printFrequency) {
@@ -62,54 +75,54 @@
   hintLog.printAvailableMessages(500);
 
   hintLog.logFormattedMessages = function() {
-    console.groupCollapsed('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
-    for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine && hintLog.moduleName != 'Directives') {
-        console.warn(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+    console.groupCollapsed('Angular Hint: ' + moduleName + ' ' + moduleDescription);
+    for(var i = 0; i < currentMessages.length; i++) {
+      if(includeLine && moduleName != 'Directives') {
+        console.warn(currentMessages[i] + ' ' + lines[i]);
       }
       else {
-        console.warn(hintLog.currentMessages[i]);
+        console.warn(currentMessages[i]);
       }
-      if(hintLog.moduleName === 'Directives') {
-        console.log(hintLog.domElements[hintLog.lines[i]]);
+      if(moduleName === 'Directives') {
+        console.log(domElements[lines[i]]);
       }
     }
     console.groupEnd();
   };
 
   hintLog.logMessages = function() {
-    console.log('Angular Hint: ' + hintLog.moduleName + ' ' + hintLog.moduleDescription);
-    for(var i = 0; i < hintLog.currentMessages.length; i++) {
-      if(hintLog.includeLine) {
-        console.log(hintLog.currentMessages[i] + ' ' + hintLog.lines[i]);
+    console.log('Angular Hint: ' + moduleName + ' ' + moduleDescription);
+    for(var i = 0; i < currentMessages.length; i++) {
+      if(includeLine) {
+        console.log(currentMessages[i] + ' ' + lines[i]);
       }
       else {
-        console.log(hintLog.currentMessages[i]);
+        console.log(currentMessages[i]);
       }
-      if(hintLog.moduleName === 'Directives') {
-        console.log(hintLog.domElements[hintLog.lines[i]]);
+      if(moduleName === 'Directives') {
+        console.log(domElements[lines[i]]);
       }
     }
   }
 
   hintLog.foundError = function(error) {
-    if(hintLog.debugBreak) {
+    if(debugBreak) {
       debugger;
     }
-    else if(hintLog.throwError) {
-      throw new Error(error + ' ' + hintLog.findLineNumber(hintLog.lineNumber));
+    else if(throwError) {
+      throw new Error(error + ' ' + hintLog.findLineNumber(stackTraceLine));
     }
     else {
-      if(hintLog.moduleName === 'Directives') {
-        if(!hintLog.propOnly) {
-          hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber), domElement);
+      if(moduleName === 'Directives') {
+        if(!propOnly) {
+          hintLog.createErrorMessage(error, hintLog.findLineNumber(stackTraceLine), domElement);
         }
         else {
-          hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber));
+          hintLog.createErrorMessage(error, hintLog.findLineNumber(stackTraceLine));
         }
       }
       else {
-        hintLog.createErrorMessage(error, hintLog.findLineNumber(hintLog.lineNumber));
+        hintLog.createErrorMessage(error, hintLog.findLineNumber(stackTraceLine));
       }
     }
   };
@@ -123,15 +136,25 @@
   };
 
   hintLog.createErrorMessage = function(error, lineNumber, domElement) {
-    if(!hintLog.pastMessages[lineNumber]) {
-      hintLog.pastMessages[lineNumber] = lineNumber;
-      hintLog.currentMessages.push(error);
-      hintLog.lines.push(lineNumber);
+    if(!pastMessages[lineNumber]) {
+      pastMessages[lineNumber] = lineNumber;
+      currentMessages.push(error);
+      lines.push(lineNumber);
       if(domElement) {
-        hintLog.domElements[lineNumber] = domElement;
+        domElements[lineNumber] = domElement;
       }
     }
+    hintLog.onMessage(error);
   };
+
+  hintLog.flush = function() {
+    var flushMessages = currentMessages;
+    currentMessages = [];
+    lines = [];
+    return flushMessages;
+  };
+
+  hintLog.onMessage = function(message) {};
 
 }((typeof module !== 'undefined' && module && module.exports) ?
       (module.exports = window.hintLog = {}) : (window.hintLog = {}) ));
