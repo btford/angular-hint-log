@@ -1,4 +1,11 @@
+var hintLog = require('./hint-log');
+
 describe('hintLog', function() {
+
+  afterEach(function() {
+    expect(hintLog.flush()).toEqual([]);
+  });
+
   describe('logMessage', function() {
     it('should add a new message to the message queue', function() {
       hintLog.logMessage('An error');
@@ -23,11 +30,11 @@ describe('hintLog', function() {
   });
 
   describe('onMessage', function() {
-    hintLog.flush();
     it('should be called whenever a message is added', function() {
       hintLog.onMessage = jasmine.createSpy('onMessage');
       hintLog.logMessage('An error');
       expect(hintLog.onMessage).toHaveBeenCalledWith('An error');
+      hintLog.flush();
     });
   });
 });

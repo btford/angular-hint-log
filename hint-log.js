@@ -1,18 +1,15 @@
-(function (hintLog) {
+var queuedMessages = [];
+function logMessage(message) {
+  queuedMessages.push(message);
+  module.exports.onMessage(message);
+};
 
-  var queuedMessages = [];
-  hintLog.logMessage = function(message) {
-    queuedMessages.push(message);
-    hintLog.onMessage(message);
-  };
+function flush() {
+  var flushMessages = queuedMessages;
+  queuedMessages = [];
+  return flushMessages;
+};
 
-  hintLog.flush = function() {
-    var flushMessages = queuedMessages;
-    queuedMessages = [];
-    return flushMessages;
-  };
-
-  hintLog.onMessage = function(message) {};
-
-}((typeof module !== 'undefined' && module && module.exports) ?
-      (module.exports = window.hintLog = {}) : (window.hintLog = {}) ));
+module.exports.onMessage = function(message) {};
+module.exports.logMessage = logMessage;
+module.exports.flush = flush;
