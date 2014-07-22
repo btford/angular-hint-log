@@ -1,4 +1,6 @@
+var baseConfig = require('./karma.conf.js');
 module.exports = function(config) {
+    baseConfig(config);
     var customLaunchers = {
     'SL_Chrome': {
       base: 'SauceLabs',
@@ -18,15 +20,6 @@ module.exports = function(config) {
     }
   };
   config.set({
-    frameworks: ['browserify','jasmine'],
-    files: [
-      'hint-log.js',
-      '*_test.js'
-    ],
-    exclude: [],
-    preprocessors: {
-      'hint-log.js': ['browserify']
-    },
     sauceLabs: {
       testName: 'Hint Log Unit Tests',
       startConnect: true,
@@ -37,11 +30,7 @@ module.exports = function(config) {
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
     reporters: ['dots', 'saucelabs'],
-    singleRun: true,
-    plugins: [
-      'karma-*'
-      // require('karma-sauce-launcher')
-    ]
+    singleRun: true
   });
   if (process.env.TRAVIS) {
     config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
