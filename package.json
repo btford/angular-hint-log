@@ -1,6 +1,6 @@
 {
   "name": "angular-hint-log",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "tool for logging angular-hint messages",
   "main": "hint-log.js",
   "devDependencies": {
