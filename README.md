@@ -62,29 +62,11 @@ And add the following to the appropriate places in your `karma.conf.js`:
       'your-module-file.js': ['browserify']
   }
 ```
-At this point you are set up to use the HintLog methods!
+At this point you are set up to use the HintLog logging method!
 
-First, configure the HintLog defaults.
-
-```javascript
-  hintLog.moduleName = 'Your Angular Hint Module Name';
-
-  hintLog.moduleDescription = 'An optional helpful message explaining the overall purpose of your module';
-  /**
-  * Optionally set defaults throwError, debugBreak, propOnly, includeLine to change the format of how your warning is delivered using hintLog.setLogDefault(defaultToSet, status). By default HintLog prints warnings to the developer console.
-  */
-  hintLog.setLogDefault('includeLine', false);
-  /**
-    Setting hintLog.lineNumber is necessary if you wish your module to log the line number of line where your error was triggered. The specific line number is found by splitting a stacktrace of errors. Hence, it is necessary to find the line in the stacktrace where the user's error is present. This will vary by module and must be investigated by the developer. Set hintLog.lineNumber to the line you wish to display.
-  **/
-  hintLog.lineNumber = 6;
-```
-
-You may choose to use different HintLog defaults depending on the type of message delivered by your module. For example AngularHintDOM includes line numbers in its warnings about function calls that manipulate the DOM from controllers, but AngularHintDirectives does not include line numbers.
-
-Your next decision is whether to use the higher level `hintLog.foundError(error)` function or the lower level `hintLog.createErrorMessage(error, lineNumber, domElement)` function. If you do not want to allow the option of configuring the hintLog defaults, you can bypass the `hintLog.foundError` function. The `hintLog.foundError` method takes the message you wish to display to the user, finds a lineNumber to represent that error, and decides whether this should throw an error, pause the debugger, or be logged to the console based on the hintLog defaults. If your goal is only to log a message in the AngularHint format, it may be simplest to use `hintLog.createErrorMessage`. This method takes an error message to display and a line number. This line number is used to ensure that duplicate errors are not thrown. You must include a fake 'line number' even if you do not wish to log a line number.
-
-After using either of these methods, your logging is complete!
+Simply call `hintLog.logMessage('##Your Module Name## Your error message')` to add a message to the
+queue of HintLog messages. The `##Your Module Name##` prefix is optional, but will allow AngularHint
+to group your message with other messages from your module.
 
 ## [License](LICENSE)
 
