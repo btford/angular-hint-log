@@ -9,19 +9,19 @@ describe('hintLog', function() {
   describe('logMessage', function() {
     it('should add a new message to the message queue', function() {
       hintLog.logMessage('##Hint Directives## An error');
-      expect(hintLog.flush()['Hint Directives'][' An error']).toEqual([' An error']);
+      expect(hintLog.flush()['Hint Directives'][' An error']).toEqual(' An error');
     });
 
 
     it('should identify the name of a module given between ##identifiers##', function() {
       hintLog.logMessage('##Hint Dom## An error');
-      expect(hintLog.flush()['Hint Dom'][' An error']).toEqual([' An error']);
+      expect(hintLog.flush()['Hint Dom'][' An error']).toEqual(' An error');
     });
 
 
     it('should queue modules without a given name under No Name', function() {
       hintLog.logMessage('An error');
-      expect(hintLog.flush()['No Name']['An error']).toEqual(['An error']);
+      expect(hintLog.flush()['No Name']['An error']).toEqual('An error');
     });
 
 
@@ -51,8 +51,8 @@ describe('hintLog', function() {
       hintLog.logMessage('An error');
       hintLog.logMessage('Another error');
       var log = hintLog.flush();
-      expect(log['No Name']['An error']).toEqual(['An error']);
-      expect(log['No Name']['Another error']).toEqual(['Another error']);
+      expect(log['No Name']['An error']).toEqual('An error');
+      expect(log['No Name']['Another error']).toEqual('Another error');
     });
 
 
@@ -60,8 +60,8 @@ describe('hintLog', function() {
       hintLog.logMessage('An error');
       hintLog.logMessage('Another error');
       var log = hintLog.flush();
-      expect(log['No Name']['An error']).toEqual(['An error']);
-      expect(log['No Name']['Another error']).toEqual(['Another error']);
+      expect(log['No Name']['An error']).toEqual('An error');
+      expect(log['No Name']['Another error']).toEqual('Another error');
       expect(hintLog.flush()).toEqual([]);
     });
   });
