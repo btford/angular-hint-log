@@ -17,7 +17,7 @@ allows AngularHint to provide grouped messages.
 ###2. API
 
 ####[logMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L14)
--------------
+----------------
 #####Use as: logMessage(message)
 
 Log a message to the AngularHintLog queue.
@@ -33,11 +33,11 @@ hintLog.logMessage('##Controllers## The best practice is to name controllers wit
 ####Params
 Param | Type | Description
 ---   | ---  | ---
-message | String | A message that includes the module name delimited by `##` in the form of `##ModuleName## Message to log`
+message | String | A message that includes the module name delimited by `##` in the form of `'##ModuleName## Message to log'`
 
 
 ####[flush](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L37)
--------------
+----------------
 #####Use as: flush()
 
 Return - and empty - the current AngularHintLog queue.
@@ -60,11 +60,11 @@ var empty = hintLog.flush();
 
 Type | Description
 ---  | ---
-Object| An Object with keys representing names of modules identified by ## syntax. Each module name is keyed to an object representing that module's messages. Messages not logged with the ## name syntax are keyed to 'General'.
+Object| An Object with keys representing names of modules identified by `##` syntax. Each module name is keyed to an object representing that module's messages. Messages not logged with the `##` name syntax are keyed to `General`.
 
 
 ####[onMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L43)
--------------
+----------------
 #####Use as: onMessage = function(message) {};
 
 Set a behavior to be done when each message is logged. This is an optional step to allow custom
