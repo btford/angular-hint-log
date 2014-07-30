@@ -9,19 +9,29 @@ describe('hintLog', function() {
   describe('logMessage', function() {
     it('should add a new message to the message queue', function() {
       hintLog.logMessage('##Hint Directives## An error');
-      expect(hintLog.flush()['Hint Directives'][' An error']).toEqual(' An error');
+      expect(hintLog.flush()['Hint Directives']['An error']).toEqual('An error');
     });
 
 
     it('should identify the name of a module given between ##identifiers##', function() {
       hintLog.logMessage('##Hint Dom## An error');
-      expect(hintLog.flush()['Hint Dom'][' An error']).toEqual(' An error');
+      expect(hintLog.flush()['Hint Dom']['An error']).toEqual('An error');
     });
 
 
-    it('should queue modules without a given name under No Name', function() {
+    it('should strip leading white space when using ##identifiers##', function() {
+       hintLog.logMessage('##Hint Dom## An error');
+       expect(hintLog.flush()['Hint Dom']['An error']).toEqual('An error');
+       hintLog.logMessage('##General## Another error');
+       hintLog.logMessage('Message without identifiers');
+       expect(Object.keys(hintLog.flush()['General'])).toEqual(['Another error',
+        'Message without identifiers']);
+    });
+
+
+    it('should queue modules without a given name under General', function() {
       hintLog.logMessage('An error');
-      expect(hintLog.flush()['No Name']['An error']).toEqual('An error');
+      expect(hintLog.flush()['General']['An error']).toEqual('An error');
     });
 
 
@@ -38,11 +48,11 @@ describe('hintLog', function() {
 
       hintLog.logMessage('An error');
       hintLog.logMessage('An error');
-      expect(Object.keys(hintLog.flush()['No Name']).length).toBe(1);
+      expect(Object.keys(hintLog.flush()['General']).length).toBe(1);
 
       hintLog.logMessage('An error');
       hintLog.logMessage('A second error');
-      expect(Object.keys(hintLog.flush()['No Name']).length).toBe(2);
+      expect(Object.keys(hintLog.flush()['General']).length).toBe(2);
     });
   });
 
@@ -51,8 +61,8 @@ describe('hintLog', function() {
       hintLog.logMessage('An error');
       hintLog.logMessage('Another error');
       var log = hintLog.flush();
-      expect(log['No Name']['An error']).toEqual('An error');
-      expect(log['No Name']['Another error']).toEqual('Another error');
+      expect(log['General']['An error']).toEqual('An error');
+      expect(log['General']['Another error']).toEqual('Another error');
     });
 
 
@@ -60,8 +70,8 @@ describe('hintLog', function() {
       hintLog.logMessage('An error');
       hintLog.logMessage('Another error');
       var log = hintLog.flush();
-      expect(log['No Name']['An error']).toEqual('An error');
-      expect(log['No Name']['Another error']).toEqual('Another error');
+      expect(log['General']['An error']).toEqual('An error');
+      expect(log['General']['Another error']).toEqual('Another error');
       expect(hintLog.flush()).toEqual([]);
     });
   });
