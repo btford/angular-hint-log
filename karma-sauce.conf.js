@@ -24,6 +24,7 @@ module.exports = function(config) {
       testName: 'Hint Log Unit Tests',
       startConnect: true,
       options: {
+        'idle-timeout': 500,
         'selenium-version': '2.37.0'
       }
     },
