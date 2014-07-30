@@ -1,4 +1,4 @@
-# Angular Hint Log [![Build Status](https://travis-ci.org/angular/angular-hint-log.svg?branch=master)](https://travis-ci.org/angular/angular-hint-log)
+# Angular Hint Log [![Build Status](https://travis-ci.org/angular/angular-hint-log.svg?branch=master)](https://travis-ci.org/angular/angular-hint-log) [![Code Climate](https://codeclimate.com/github/angular/angular-hint-log/badges/gpa.svg)](https://codeclimate.com/github/angular/angular-hint-log)
 
 A library to format messages for [AngularHint](https://github.com/angular/angular-hint).
 
