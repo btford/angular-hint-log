@@ -11,23 +11,28 @@ var queuedMessages = {};
 * If a ##ModuleName## is not included, the message is added to a `General` category
 * in the queue.
 **/
-function logMessage(message) {
-  //HintLog messages are delimited by `##ModuleName## Module Message`
-  //Split the message into the name and message value
-  var nameThenValue = message.split(/##/);
-  //If no ##ModuleName## was found, categorize the message under `General`
-  if(nameThenValue[0] !== '') {
+function logMessage(moduleName, message, severity) {
+
+  var typeRay = ['Error Messages', 'Warning Messages', 'Suggestion Messages'];
+  var typeError = typeRay[severity-1];
+  //If no ModuleName was found, categorize the message under `General`
+  if(moduleName === '') {
     //If the category does not exist, initialize a new object
     queuedMessages.General = queuedMessages.General || {};
-    queuedMessages.General[message] = message;
-  } else {
-    //Strip leading spaces in message caused by splitting out ##ModuleName##
-    nameThenValue[2] = nameThenValue[2].charAt(0) === ' ' ? nameThenValue[2].substring(1)
-      : nameThenValue[2];
-    //If the category does not exist, initialize a new object
-    queuedMessages[nameThenValue[1]] = queuedMessages[nameThenValue[1]] || {};
-    queuedMessages[nameThenValue[1]][nameThenValue[2]] = nameThenValue[2];
+    queuedMessages.General[typeError] = queuedMessages.General[typeError] || [];
 
+    //check if message exists in array
+    if(queuedMessages.General[typeError].indexOf(message) < 0) {
+      queuedMessages.General[typeError].push(message);
+    }
+  } else {
+    //If the category does not exist, initialize a new object
+    queuedMessages[moduleName] = queuedMessages[moduleName] || {};
+    queuedMessages[moduleName][typeError] = queuedMessages[moduleName][typeError] || [];
+
+    if(queuedMessages[moduleName][typeError].indexOf(message) < 0) {
+      queuedMessages[moduleName][typeError].push(message);
+    }
   }
   module.exports.onMessage(message);
 }
