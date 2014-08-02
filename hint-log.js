@@ -8,9 +8,7 @@ var queuedMessages = {},
 
 /**
 * Add a message to the HintLog message queue. Messages are organized into categories
-* according to their module name which is included in the message with ##ModuleName##.
-* If a ##ModuleName## is not included, the message is added to a `General` category
-* in the queue.
+* according to their module name and severity.
 **/
 function logMessage(moduleName, message, severity) {
   //If no severity was provided, categorize the message under `Suggestion Messages`

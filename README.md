@@ -18,7 +18,7 @@ allows AngularHint to provide grouped messages.
 
 ####[logMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L14)
 ----------------
-#####Use as: logMessage(message)
+#####Use as: logMessage(moduleName, message, severity)
 
 Log a message to the AngularHintLog queue.
 
@@ -26,14 +26,18 @@ Log a message to the AngularHintLog queue.
 
 ```javascript
 var hintLog = require('angular-hint-log');
-
-hintLog.logMessage('##Controllers## The best practice is to name controllers with "Controller"');
+var message = 'The best practice is to name controllers with "Controller"'
+//adds the message to the queue
+//marks as coming from the `Controllers` module and being a `Suggestion Message`
+hintLog.logMessage('Controllers', message, 3);
 ```
 
 ####Params
 Param | Type | Description
 ---   | ---  | ---
-message | String | A message that includes the module name delimited by `##` in the form of `'##ModuleName## Message to log'`
+moduleName | String | The name of the AngularHintModule from which the message is logged
+message | String | A message to deliver to add to the queue
+severity | number | A number from 1-3 corresponding to the severity of the message. 1 -> 'Error Messages', 2 -> 'Warning Messages', 3 -> 'Suggestion Messages'
 
 
 ####[flush](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L37)
@@ -149,11 +153,10 @@ use and testing. For unit testing with karma, install the following package with
 5. AngularHintLog is ready to log messages!
 
   ```
-  hintLog.logMessage('##Module Name## Error message');
+  hintLog.logMessage('ModuleName', 'Error message', 1);
   ```
 
-  This call adds a message to the AngularHintLog queue. The `##Module Name##` prefix is optional but
-  will allow AngularHint to group the message with other messages from the same module.
+  This call adds a message to the AngularHintLog queue.
 
 ## [License](LICENSE)
 
