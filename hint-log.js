@@ -13,6 +13,8 @@ var queuedMessages = {},
 * in the queue.
 **/
 function logMessage(moduleName, message, severity) {
+  //If no severity was provided, categorize the message under `Suggestion Messages`
+  severity = severity || 3;
   var messageType = MESSAGE_TYPES[severity-1];
   //If no ModuleName was found, categorize the message under `General`
   moduleName = moduleName || 'General';

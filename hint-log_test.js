@@ -18,6 +18,13 @@ describe('hintLog', function() {
       expect(hintLog.flush()['General']['Error Messages']).toEqual(['An error']);
     });
 
+
+    it('should queue modules without a given severity under Suggestion Messages', function() {
+      hintLog.logMessage('','An error');
+      expect(hintLog.flush()['General']['Suggestion Messages']).toEqual(['An error']);
+    });
+
+
     it('should prevent the logging of duplicate messages', function() {
       //Same error, only logged once
       hintLog.logMessage('Directives', 'An error', 1);
