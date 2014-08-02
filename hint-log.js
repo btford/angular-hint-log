@@ -3,7 +3,8 @@
 * has a key for each ngHint module that corresponds to the messages
 * from that module.
 */
-var queuedMessages = {};
+var queuedMessages = {},
+  MESSAGE_TYPES = ['Error Messages', 'Warning Messages', 'Suggestion Messages'];
 
 /**
 * Add a message to the HintLog message queue. Messages are organized into categories
@@ -12,28 +13,18 @@ var queuedMessages = {};
 * in the queue.
 **/
 function logMessage(moduleName, message, severity) {
-
-  var typeRay = ['Error Messages', 'Warning Messages', 'Suggestion Messages'];
-  var typeError = typeRay[severity-1];
+  var messageType = MESSAGE_TYPES[severity-1];
   //If no ModuleName was found, categorize the message under `General`
-  if(moduleName === '') {
-    //If the category does not exist, initialize a new object
-    queuedMessages.General = queuedMessages.General || {};
-    queuedMessages.General[typeError] = queuedMessages.General[typeError] || [];
+  moduleName = moduleName || 'General';
 
-    //check if message exists in array
-    if(queuedMessages.General[typeError].indexOf(message) < 0) {
-      queuedMessages.General[typeError].push(message);
-    }
-  } else {
-    //If the category does not exist, initialize a new object
-    queuedMessages[moduleName] = queuedMessages[moduleName] || {};
-    queuedMessages[moduleName][typeError] = queuedMessages[moduleName][typeError] || [];
+  //If the category does not exist, initialize a new object
+  queuedMessages[moduleName] = queuedMessages[moduleName] || {};
+  queuedMessages[moduleName][messageType] = queuedMessages[moduleName][messageType] || [];
 
-    if(queuedMessages[moduleName][typeError].indexOf(message) < 0) {
-      queuedMessages[moduleName][typeError].push(message);
-    }
+  if(queuedMessages[moduleName][messageType].indexOf(message) < 0) {
+    queuedMessages[moduleName][messageType].push(message);
   }
+
   module.exports.onMessage(message);
 }
 
