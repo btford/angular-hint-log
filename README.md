@@ -2,7 +2,8 @@
 
 A library to format messages for [AngularHint](https://github.com/angular/angular-hint).
 
-See the [NPM Module](https://www.npmjs.org/package/angular-hint-log).
+See the [AngularHintLog NPM Module](https://www.npmjs.org/package/angular-hint-log) and the
+[AngularHint NPM Module](https://www.npmjs.org/package/angular-hint).
 
 ## Usage
 
@@ -16,7 +17,7 @@ allows AngularHint to provide grouped messages.
 
 ###2. API
 
-####[logMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L14)
+####[logMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L13)
 ----------------
 #####Use as: logMessage(moduleName, message, severity)
 
@@ -40,7 +41,7 @@ message | String | A message to deliver to add to the queue
 severity | number | A number from 1-3 corresponding to the severity of the message. 1 -> 'Error Messages', 2 -> 'Warning Messages', 3 -> 'Suggestion Messages'
 
 
-####[flush](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L37)
+####[flush](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L34)
 ----------------
 #####Use as: flush()
 
@@ -67,7 +68,7 @@ Type | Description
 Object| An Object with keys representing names of modules identified by `##` syntax. Each module name is keyed to an object representing that module's messages. Messages not logged with the `##` name syntax are keyed to `General`.
 
 
-####[onMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L43)
+####[onMessage](https://github.com/angular/angular-hint-log/blob/master/hint-log.js#L40)
 ----------------
 #####Use as: onMessage = function(message) {};
 
