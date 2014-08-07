@@ -25,7 +25,7 @@ function logMessage(moduleName, message, severity) {
     queuedMessages[moduleName][messageType].push(message);
   }
 
-  module.exports.onMessage(message);
+  module.exports.onMessage(moduleName, message, messageType);
 }
 
 /**

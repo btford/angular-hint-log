@@ -72,7 +72,7 @@ describe('hintLog', function() {
     it('should be called whenever a message is added', function() {
       hintLog.onMessage = jasmine.createSpy('onMessage');
       hintLog.logMessage('', 'An error', 1);
-      expect(hintLog.onMessage).toHaveBeenCalledWith('An error');
+      expect(hintLog.onMessage).toHaveBeenCalledWith('General', 'An error', 'Error Messages');
       hintLog.flush();
     });
   });
