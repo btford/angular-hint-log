@@ -4,28 +4,33 @@
 * from that module.
 */
 var queuedMessages = {},
-  MESSAGE_TYPES = ['Error Messages', 'Warning Messages', 'Suggestion Messages'];
+    MESSAGE_TYPES = [
+      'error',
+      'warning',
+      'suggestion'
+    ];
 
 /**
 * Add a message to the HintLog message queue. Messages are organized into categories
 * according to their module name and severity.
 **/
-function logMessage(moduleName, message, severity) {
-  //If no severity was provided, categorize the message under `Suggestion Messages`
+function logMessage(moduleName, message, severity, category) {
+  // If no severity was provided, categorize the message as a `suggestion`
   severity = severity || 3;
-  var messageType = MESSAGE_TYPES[severity-1];
-  //If no ModuleName was found, categorize the message under `General`
+  var messageType = MESSAGE_TYPES[severity - 1];
+
+  // If no ModuleName was found, categorize the message under `General`
   moduleName = moduleName || 'General';
 
-  //If the category does not exist, initialize a new object
+  // If the category does not exist, initialize a new object
   queuedMessages[moduleName] = queuedMessages[moduleName] || {};
   queuedMessages[moduleName][messageType] = queuedMessages[moduleName][messageType] || [];
 
-  if(queuedMessages[moduleName][messageType].indexOf(message) < 0) {
+  if (queuedMessages[moduleName][messageType].indexOf(message) < 0) {
     queuedMessages[moduleName][messageType].push(message);
   }
 
-  module.exports.onMessage(moduleName, message, messageType);
+  module.exports.onMessage(moduleName, message, messageType, category);
 }
 
 /**

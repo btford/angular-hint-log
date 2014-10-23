@@ -9,19 +9,19 @@ describe('hintLog', function() {
   describe('logMessage', function() {
     it('should add a new message to the message queue', function() {
       hintLog.logMessage('Directives', 'An error', 1);
-      expect(hintLog.flush()['Directives']['Error Messages']).toEqual(['An error']);
+      expect(hintLog.flush()['Directives'].error).toEqual(['An error']);
     });
 
 
     it('should queue modules without a given name under General', function() {
       hintLog.logMessage('','An error', 1);
-      expect(hintLog.flush()['General']['Error Messages']).toEqual(['An error']);
+      expect(hintLog.flush()['General'].error).toEqual(['An error']);
     });
 
 
-    it('should queue modules without a given severity under Suggestion Messages', function() {
+    it('should queue modules without a given severity under Suggestion', function() {
       hintLog.logMessage('','An error');
-      expect(hintLog.flush()['General']['Suggestion Messages']).toEqual(['An error']);
+      expect(hintLog.flush()['General'].suggestion).toEqual(['An error']);
     });
 
 
@@ -29,23 +29,23 @@ describe('hintLog', function() {
       //Same error, only logged once
       hintLog.logMessage('Directives', 'An error', 1);
       hintLog.logMessage('Directives', 'An error', 1);
-      expect(hintLog.flush()['Directives']['Error Messages'].length).toBe(1);
+      expect(hintLog.flush()['Directives'].error.length).toBe(1);
 
       //Different errors, both logged
       hintLog.logMessage('Directives', 'An error', 1);
       hintLog.logMessage('Directives', 'An error part 2', 1);
-      expect(Object.keys(hintLog.flush()['Directives']['Error Messages']).length).toBe(2);
+      expect(Object.keys(hintLog.flush()['Directives'].error).length).toBe(2);
 
       //Different severities, both logged
       hintLog.logMessage('Directives', 'An error', 1);
       hintLog.logMessage('Directives', 'An error part 2', 2);
       var log = hintLog.flush();
-      expect(Object.keys(log['Directives']['Error Messages']).length).toBe(1);
-      expect(Object.keys(log['Directives']['Warning Messages']).length).toBe(1);
+      expect(Object.keys(log['Directives'].error).length).toBe(1);
+      expect(Object.keys(log['Directives'].warning).length).toBe(1);
 
       hintLog.logMessage('','An error', 1);
       hintLog.logMessage('','An error', 1);
-      expect(Object.keys(hintLog.flush()['General']['Error Messages']).length).toBe(1);
+      expect(Object.keys(hintLog.flush()['General'].error).length).toBe(1);
     });
   });
 
@@ -54,7 +54,7 @@ describe('hintLog', function() {
       hintLog.logMessage('', 'An error', 1);
       hintLog.logMessage('', 'Another error', 1);
       var log = hintLog.flush();
-      expect(log['General']['Error Messages']).toEqual(['An error','Another error']);
+      expect(log['General'].error).toEqual(['An error', 'Another error']);
     });
 
 
@@ -62,8 +62,8 @@ describe('hintLog', function() {
       hintLog.logMessage('', 'An error', 1);
       hintLog.logMessage('', 'Another error', 2);
       var log = hintLog.flush();
-      expect(log['General']['Error Messages'][0]).toEqual('An error');
-      expect(log['General']['Warning Messages'][0]).toEqual('Another error');
+      expect(log['General'].error[0]).toEqual('An error');
+      expect(log['General'].warning[0]).toEqual('Another error');
       expect(hintLog.flush()).toEqual([]);
     });
   });
@@ -72,7 +72,7 @@ describe('hintLog', function() {
     it('should be called whenever a message is added', function() {
       hintLog.onMessage = jasmine.createSpy('onMessage');
       hintLog.logMessage('', 'An error', 1);
-      expect(hintLog.onMessage).toHaveBeenCalledWith('General', 'An error', 'Error Messages');
+      expect(hintLog.onMessage).toHaveBeenCalledWith('General', 'An error', 'error', undefined);
       hintLog.flush();
     });
   });
